@@ -73,14 +73,6 @@ def homepage():
     return render_template('homepage.html', restaurants=restaurants)
 
 
-# Route to view restaurant details and its reviews
-@app.route('/restaurant/<int:restaurant_id>')
-def restaurant_details(restaurant_id):
-    restaurant = Restaurant.query.get_or_404(restaurant_id)
-    reviews = Review.query.filter_by(restaurant_id=restaurant_id).all()
-    return render_template('restaurant_details.html', restaurant=restaurant, reviews=reviews)
-
-
 # Route to add a review to a restaurant
 @app.route('/restaurant/<int:restaurant_id>/add_review', methods=['GET', 'POST'])
 def add_review(restaurant_id):
