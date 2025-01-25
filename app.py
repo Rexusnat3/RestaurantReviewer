@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import login_user, login_required, current_user
+from flask_login import login_user, login_required
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.sqlite'
@@ -13,25 +13,22 @@ class Restaurant(db.Model):
     name = db.Column(db.String(80))
     cuisine = db.Column(db.String(80))
     description = db.Column(db.String(80))
-
-
-# Defining the User model
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), nullable=False, unique=True)
-    password = db.Column(db.String(120), nullable=False, unique=True)
+    reviews = db.relationship('Review', backref='restaurant', lazy=True)
 
 
 # Define review model
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(500), nullable=False)
-    rating = db.Column(db.Integer, nullable=False)  # 1 to 5 scale
+    content = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    restaurant = db.relationship('Restaurant', backref=db.backref('reviews', lazy=True))
-    user = db.relationship('User', backref=db.backref('reviews', lazy=True))
+
+# Define user model
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), nullable=False, unique=True)
+    password = db.Column(db.String(120), nullable=False, unique=True)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -69,36 +66,45 @@ def login():
     return render_template('login.html')  # Render login page for GET or failed login
 
 
-# Route to display the homepage of the project
+# Route to display the homepage
 @app.route('/homepage')
 def homepage():
     restaurants = Restaurant.query.all()
     return render_template('homepage.html', restaurants=restaurants)
 
 
-# Route to write a review for a specific restaurant
-@app.route('/restaurant/<int:restaurant_id>/review', methods=['GET', 'POST'])
-@login_required  # Make sure the user is logged in to write a review
-def write_review(restaurant_id):
+# Route to view restaurant details and its reviews
+@app.route('/restaurant/<int:restaurant_id>')
+def restaurant_details(restaurant_id):
+    restaurant = Restaurant.query.get_or_404(restaurant_id)
+    reviews = Review.query.filter_by(restaurant_id=restaurant_id).all()
+    return render_template('restaurant_details.html', restaurant=restaurant, reviews=reviews)
+
+
+# Route to add a review to a restaurant
+@app.route('/restaurant/<int:restaurant_id>/add_review', methods=['GET', 'POST'])
+def add_review(restaurant_id):
     restaurant = Restaurant.query.get_or_404(restaurant_id)
     if request.method == 'POST':
         content = request.form['content']
-        rating = request.form['rating']
+        rating = int(request.form['rating'])
+        if rating < 1 or rating > 5:
+            flash('Rating must be between 1 and 5.', 'error')
+            return redirect(url_for('add_review', restaurant_id=restaurant_id))
 
-        # Create a new review and associate it with the restaurant and the logged-in user
-        new_review = Review(content=content, rating=rating, restaurant_id=restaurant.id, user_id=current_user.id)
-        db.session.add(new_review)
+        review = Review(content=content, rating=rating, restaurant_id=restaurant_id)
+        db.session.add(review)
         db.session.commit()
-        flash('Your review has been posted!', 'success')
-        return redirect(url_for('homepage'))  # Redirect to homepage or the restaurant page
+        flash('Review added successfully!', 'success')
+        return redirect(url_for('restaurant_details', restaurant_id=restaurant_id))
 
-    return render_template('write_review.html', restaurant=restaurant)
+    return render_template('add_review.html', restaurant=restaurant)
 
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        # Add some sample data if the tables are empty
+        # Populate restaurants if the database is empty
         if Restaurant.query.count() == 0:
             sample_restaurants = [
                 Restaurant(name='Davids Pizza', cuisine='Italian', description='Flamboyant Pizza with the freshest ingredients'),

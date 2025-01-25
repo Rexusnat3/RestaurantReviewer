@@ -38,28 +38,30 @@
             margin: 0 0 10px;
             color: #666;
         }
-        .restaurant form {
+        .restaurant .buttons {
             display: flex;
-            flex-direction: column;
+            gap: 10px;
         }
-        .restaurant textarea {
-            resize: none;
+        .restaurant a {
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-        .restaurant button {
-            padding: 10px;
-            background-color: #4CAF50;
+            text-align: center;
+            text-decoration: none;
             color: white;
-            border: none;
             border-radius: 4px;
-            cursor: pointer;
             font-size: 14px;
+            display: inline-block;
         }
-        .restaurant button:hover {
-            background-color: #45a049;
+        .restaurant .read-reviews {
+            background-color: #007BFF;
+        }
+        .restaurant .read-reviews:hover {
+            background-color: #0056b3;
+        }
+        .restaurant .write-review {
+            background-color: #28a745;
+        }
+        .restaurant .write-review:hover {
+            background-color: #218838;
         }
         .login-message {
             text-align: center;
@@ -79,46 +81,46 @@
         <div class="restaurant">
             <h2>William Baker Morrisons Bakes</h2>
             <p>Cuisine: English</p>
-            <form method="POST" action="/add-review">
-                <textarea name="review" rows="3" placeholder="Write your review here..." required></textarea>
-                <button type="submit">Add Review</button>
-            </form>
+            <div class="buttons">
+                <a href="/reviews/william-baker-morrisons-bakes" class="read-reviews">Read Reviews</a>
+                <a href="/write-review/william-baker-morrisons-bakes" class="write-review">Write a Review</a>
+            </div>
         </div>
 
         <div class="restaurant">
             <h2>Davids Pizza</h2>
             <p>Cuisine: Italian</p>
-            <form method="POST" action="/add-review">
-                <textarea name="review" rows="3" placeholder="Write your review here..." required></textarea>
-                <button type="submit">Add Review</button>
-            </form>
+            <div class="buttons">
+                <a href="/reviews/davids-pizza" class="read-reviews">Read Reviews</a>
+                <a href="/write-review/davids-pizza" class="write-review">Write a Review</a>
+            </div>
         </div>
 
         <div class="restaurant">
             <h2>Marian Empanadas</h2>
-            <p>Cuisine: venezuelan</p>
-            <form method="POST" action="/add-review">
-                <textarea name="review" rows="3" placeholder="Write your review here..." required></textarea>
-                <button type="submit">Add Review</button>
-            </form>
+            <p>Cuisine: Venezuelan</p>
+            <div class="buttons">
+                <a href="/reviews/marian-empanadas" class="read-reviews">Read Reviews</a>
+                <a href="/write-review/marian-empanadas" class="write-review">Write a Review</a>
+            </div>
         </div>
 
         <div class="restaurant">
             <h2>Jayant Palace</h2>
             <p>Cuisine: Indian</p>
-            <form method="POST" action="/add-review">
-                <textarea name="review" rows="3" placeholder="Write your review here..." required></textarea>
-                <button type="submit">Add Review</button>
-            </form>
+            <div class="buttons">
+                <a href="/reviews/jayant-palace" class="read-reviews">Read Reviews</a>
+                <a href="/write-review/jayant-palace" class="write-review">Write a Review</a>
+            </div>
         </div>
 
         <div class="restaurant">
             <h2>Daniels Taqueria</h2>
-            <p>Cuisine: mexican</p>
-            <form method="POST" action="/add-review">
-                <textarea name="review" rows="3" placeholder="Write your review here..." required></textarea>
-                <button type="submit">Add Review</button>
-            </form>
+            <p>Cuisine: Mexican</p>
+            <div class="buttons">
+                <a href="/reviews/daniels-taqueria" class="read-reviews">Read Reviews</a>
+                <a href="/write-review/daniels-taqueria" class="write-review">Write a Review</a>
+            </div>
         </div>
     </div>
 </body>
