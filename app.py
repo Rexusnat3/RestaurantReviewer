@@ -101,6 +101,14 @@ def add_review(restaurant_id):
     return render_template('add_review.html', restaurant=restaurant)
 
 
+# Route to view all reviews for a specific restaurant
+@app.route('/reviews/<int:restaurant_id>')
+def view_reviews(restaurant_id):
+    restaurant = Restaurant.query.get_or_404(restaurant_id)
+    reviews = Review.query.filter_by(restaurant_id=restaurant_id).all()
+    return render_template('reviews.html', restaurant=restaurant, reviews=reviews)
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
