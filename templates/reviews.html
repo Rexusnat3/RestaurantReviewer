@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .review {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .review h2 {
+            margin: 0 0 10px;
+        }
+        .review p {
+            margin: 0 0 10px;
+            color: #666;
+        }
+        .rating {
+            color: #f39c12;
+            font-weight: bold;
+        }
+        .back-link {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .back-link a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reviews for {{ restaurant.name }}</h1>
+
+        {% if reviews %}
+            {% for review in reviews %}
+            <div class="review">
+                <h2>Rating: <span class="rating">{{ review.rating }}</span>/5</h2>
+                <p>{{ review.content }}</p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No reviews available for this restaurant. Be the first to <a href="/restaurant/{{ restaurant.id }}/add_review">write a review</a>.</p>
+        {% endif %}
+
+        <div class="back-link">
+            <a href="/homepage">Back to Homepage</a>
+        </div>
+    </div>
+</body>
+</html>
