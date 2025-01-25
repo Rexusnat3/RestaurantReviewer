@@ -1,0 +1,47 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+
+# SQLite database
+*.db
+
+# Flask instance folder
+instance/
+
+# Static files cache
+static/
+
+# VS Code settings
+.vscode/
+
+# Python packaging files
+*.egg
+*.egg-info/
+dist/
+build/
+*.pyc
+*.pyo
+
+# Logs
+*.log
+
+# Docker
+*.env
+.env.*
+docker-compose.override.yml
+
+# IDEs and editors
+.idea/
+*.iml
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Others
+*.swp
+*.swo
